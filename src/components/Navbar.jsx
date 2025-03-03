@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { FiHome, FiFileText } from 'react-icons/fi';
-import logo from '../Logo.webp'
+import logo from '../Notes.png'
 
 const Navbar = () => {
   return (
@@ -9,7 +9,7 @@ const Navbar = () => {
       <img src={logo} alt="Pastes Logo" className="h-10 w-10"/>
       <div className="flex gap-4 text-lg font-semibold text-gray-900 dark:text-gray-100">
       <p className="text-4xl font-extrabold bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 text-transparent bg-clip-text drop-shadow-lg">
-        NoteNest
+        Amanuensis
       </p>
       <p className="mt-3 text-lg text-gray-500 italic">– A cozy place for all your notes.</p>
       </div>
