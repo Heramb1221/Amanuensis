@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import { addToPastes, updateToPastes } from '../redux/pasteSlice';
+import { fetchNotes, addNote, updateNote } from '../redux/pasteSlice';
 import toast from 'react-hot-toast';
 import { FiSave } from 'react-icons/fi';
 
@@ -13,34 +13,40 @@ const Home = () => {
     const dispatch = useDispatch();
     const paste = useSelector((state) => state.paste.pastes.find(p => p._id === pasteId));
 
-
+//handles fetching notes
     useEffect(() => {
-        if (paste) {
+        dispatch(fetchNotes());
+    }, [dispatch]);
+ //updates the form when you select a note to edit.   
+    useEffect(() => {
+        if (pasteId && paste) {
             setTitle(paste.title);
             setValue(paste.content);
+        } else {
+            setTitle('');
+            setValue('');
         }
-    }, [paste]);
+    }, [pasteId, paste]);
 
     function createPaste() {
         if (!title || !value) {
             toast.error("Title and content cannot be empty");
             return;
         }
-
+    
         const paste = {
-            title: title,
+            title,
             content: value,
-            _id: pasteId || Date.now().toString(36),
-            createdAt: new Date().toISOString(),
         };
-
+    
         if (pasteId) {
-            dispatch(updateToPastes(paste));
+            dispatch(updateNote({ ...paste, _id: pasteId }));
             toast.success("Paste updated successfully");
         } else {
-            dispatch(addToPastes(paste));
+            dispatch(addNote(paste));
+            toast.success("Paste created successfully");
         }
-
+    
         setTitle('');
         setValue('');
         setSearchParams({});

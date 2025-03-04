@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
-import { updateToPastes } from '../redux/pasteSlice';
+import { fetchNotes, updateNote } from '../redux/pasteSlice';
 import toast from 'react-hot-toast';
 
 const ViewPaste = () => {
@@ -10,6 +10,12 @@ const ViewPaste = () => {
     const navigate = useNavigate();
 
     const allPastes = useSelector((state) => state.paste.pastes);
+
+    useEffect(() => {
+        if (allPastes.length === 0) {
+            dispatch(fetchNotes()); // Fetch notes only if the store is empty
+        }
+    }, [dispatch, allPastes.length]);
 
     const paste = useMemo(() => allPastes.find((p) => p._id === id) || { title: '', content: '' }, [allPastes, id]);
 
@@ -28,8 +34,9 @@ const ViewPaste = () => {
             return;
         }
 
-        dispatch(updateToPastes({ _id: id, title, content }));
+        dispatch(updateNote({ _id: id, title, content }));
         setIsEditing(false);
+        toast.success("Paste updated successfully!");
     };
 
     return (
