@@ -1,16 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteNote } from '../redux/pasteSlice';
 import toast from 'react-hot-toast';
 import { FiEdit, FiEye, FiTrash2, FiShare2, FiClipboard } from 'react-icons/fi';
 import { FaRegCalendarAlt, FaRegClock } from 'react-icons/fa';
+import { fetchNotes } from '../redux/pasteSlice'; 
+
 
 const Pastes = () => {
     const pastes = useSelector((state) => state.paste.pastes);
     const dispatch = useDispatch();
     const [searchTerm, setSearchTerm] = useState('');
     const [expanded, setExpanded] = useState({});
-
+    useEffect(() => {
+        if (pastes.length === 0) {
+            dispatch(fetchNotes()); 
+        }
+    }, [dispatch, pastes.length]);
+    
     const filteredData = pastes.filter(paste =>
         paste.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
