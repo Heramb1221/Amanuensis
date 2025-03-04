@@ -13,11 +13,10 @@ const Home = () => {
     const dispatch = useDispatch();
     const paste = useSelector((state) => state.paste.pastes.find(p => p._id === pasteId));
 
-//handles fetching notes
     useEffect(() => {
         dispatch(fetchNotes());
     }, [dispatch]);
- //updates the form when you select a note to edit.   
+
     useEffect(() => {
         if (pasteId && paste) {
             setTitle(paste.title);
@@ -34,10 +33,7 @@ const Home = () => {
             return;
         }
     
-        const paste = {
-            title,
-            content: value,
-        };
+        const paste = { title, content: value };
     
         if (pasteId) {
             dispatch(updateNote({ ...paste, _id: pasteId }));
@@ -53,11 +49,11 @@ const Home = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-900 text-gray-100 items-center flex justify-center">
-            <div className="max-w-4xl mx-auto p-6 bg-gray-800 text-gray-100 rounded-lg shadow-md w-[60%]">
-                <div className='flex flex-row gap-4 place-content-between'>
+        <div className="min-h-screen bg-gray-900 text-gray-100 flex justify-center items-center px-4">
+            <div className="w-full max-w-4xl mx-auto p-6 bg-gray-800 text-gray-100 rounded-lg shadow-md md:max-w-[80%] lg:max-w-[60%]">
+                <div className='flex flex-col md:flex-row gap-4'>
                     <input
-                        className='p-2 rounded-xl w-full pl-4 bg-gray-700 text-gray-100 border border-gray-600 focus:ring-blue-400 focus:outline-none'
+                        className='p-3 w-full bg-gray-700 text-gray-100 rounded-lg border border-gray-600 focus:ring-blue-400 focus:outline-none'
                         type='text'
                         placeholder='Enter title here'
                         value={title}
@@ -65,18 +61,18 @@ const Home = () => {
                     />
                 </div>
 
-                <div className='mt-6'>
+                <div className='mt-4'>
                     <textarea
-                        className='w-full rounded-xl p-4 bg-gray-700 text-gray-100 border border-gray-600 focus:ring-blue-400 focus:outline-none'
+                        className='w-full p-3 bg-gray-700 text-gray-100 rounded-lg border border-gray-600 focus:ring-blue-400 focus:outline-none'
                         value={value}
                         placeholder='Enter content here'
                         onChange={(e) => setValue(e.target.value)}
-                        rows={15}
+                        rows={10}
                     />
                 </div>
 
                 <div className='mt-4 flex justify-end'>
-                    <button onClick={createPaste} className='flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-500 hover:bg-blue-600 text-white font-medium transition duration-200'>
+                    <button onClick={createPaste} className='flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white font-medium transition duration-200'>
                         <FiSave />
                         {pasteId ? "Update My Paste" : "Create My Paste"}
                     </button>
